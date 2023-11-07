@@ -1,15 +1,15 @@
+
 #include<iostream>
 using namespace std;
 class Angajat
 {
 private:
 	const int id;
-	string nume;//get+set
-	string Profesie;//get+set
-	int vechime;//get+set
-	int* salariu;
-	int an;
-	static int SporDeRisc;//get+set
+	string Nume;
+	string Profesie;
+	int NrAniVechime;
+	float* Salariu;
+	static int SporDeRisc;
 public://trec din public in privat
 	static int getSporDeRisc()//doar citire, functia statica
 	{
@@ -26,117 +26,120 @@ public://trec din public in privat
 
 	Angajat() :id(1)
 	{
-		this->nume = " Angajat";
-		this->vechime = 0;
-		this->salariu = NULL;
+		this->Nume = " Angajat";
+		this->NrAniVechime = 0;
+		this->Salariu = NULL;
 		this->Profesie = " Profesie ";
-		this->an = 0;
-	}
-	Angajat(int idNou, string nume, string Profesie) : id(idNou)
-	{
-		this->nume = nume;
-		this->vechime = 0;
-		this->salariu = NULL;
-		this->Profesie = Profesie;
-		this->an = 0;
 
 	}
-	Angajat(int id, string nume, string Profesie, int vechime, int* salariu, int an) :id(id), nume(nume), Profesie(Profesie), vechime(vechime), an(an)
+	Angajat(int idNou, string Nume, string Profesie) : id(idNou)
 	{
-		if (vechime != 0)
+		this->Nume = Nume;
+		this->NrAniVechime = 0;
+		this->Salariu = NULL;
+		this->Profesie = Profesie;
+
+
+	}
+	Angajat(int id, string Nume, string Profesie, int NrAniVechime, const float* Salariu) :id(id)
+	{
+		this->Nume = Nume;
+		this->NrAniVechime = NrAniVechime;
+		this->Profesie = Profesie;
+		if (NrAniVechime != 0)
 		{
-			this->salariu = new int[vechime];
-			for (int i = 0;i < vechime;i++)
+			this->Salariu = new float[NrAniVechime];
+			for (int i = 0;i < NrAniVechime;i++)
 			{
-				this->salariu[i] = salariu[i];
+				this->Salariu[i] = Salariu[i];
 
 			}
 		}
-		else this->salariu = NULL;
+		else this->Salariu = NULL;
 	}
-	//constructor de copiere
-	Angajat(const Angajat& a) :id(a.id)
+
+	Angajat(const Angajat& a) :id(a.id)//constructor de copiere
 	{
-		nume = a.nume;
-		vechime = a.vechime;
-		salariu = new int[vechime];
-		if (vechime != 0)
+		Nume = a.Nume;
+		NrAniVechime = a.NrAniVechime;
+		Profesie = a.Profesie;
+		Salariu = new float[NrAniVechime];
+		if (NrAniVechime != 0)
 		{
-			this->salariu = new int[vechime];
-			for (int i = 0;i < vechime;i++)
+			this->Salariu = new float[NrAniVechime];
+			for (int i = 0;i < NrAniVechime;i++)
 			{
-				this->salariu[i] = a.salariu[i];
+				this->Salariu[i] = a.Salariu[i];
 			}
 		}
 		else
-			this->salariu = NULL;
+			this->Salariu = NULL;
 
 	}
 	Angajat operator=(const Angajat& a)
 	{
 		if (this != &a)
 		{
-			if (this->salariu != NULL)
+			if (this->Salariu != NULL)
 			{
-				delete[]this->salariu;
-				nume = a.nume;
-				vechime = a.vechime;
-				salariu = new int[vechime];
+				delete[]this->Salariu;
 			}
-			if (vechime != 0)
+			Nume = a.Nume;
+			Profesie = a.Profesie;
+			NrAniVechime = a.NrAniVechime;
+			Salariu = new float[NrAniVechime];
+
+			if (NrAniVechime != 0)
 			{
-				this->salariu = new int[vechime];
-				for (int i = 0;i < vechime;i++)
+				this->Salariu = new float[NrAniVechime];
+				for (int i = 0;i < NrAniVechime;i++)
 				{
-					this->salariu[i] = a.salariu[i];
+					this->Salariu[i] = a.Salariu[i];
 				}
 
 			}
-			else this->salariu = NULL;
+			else this->Salariu = NULL;
 
 		}
 		return *this;
 	}
 	~Angajat()
 	{
-		if (this->salariu != NULL)
+		if (this->Salariu != NULL)
 		{
-			delete[]this->salariu;
+			delete[]this->Salariu;
 		}
 	}
 	void afisare()
 	{
-		cout << id << "." << " Angajatul: " << nume << endl;
+		cout << id << "." << " Angajatul: " << Nume << endl;
 		cout << "      Profesia:" << Profesie << endl;
-		cout << "      Vechime:  " << vechime << " ani." << endl;
-		cout << "      Pe fiecare an a avut salariul de: " << endl;
-		if (vechime != NULL)
+		cout << "      Ani vechime:  " << NrAniVechime << " ani." << endl;
+		cout << "      Pe fiecare an a avut salariul de: ";
+		if (NrAniVechime != NULL)
 		{
-			for (int i = 0;i < vechime;i++)
+			for (int i = 0;i < NrAniVechime;i++)
 			{
-				cout << "     An: " << an << "  /   " << salariu[i] << "lei" << endl << " ";
+				cout << i + 1 << Salariu[i] << "lei" << " ";
 			}
 		}
 		else
 		{
 			cout << " - ";
 		}
-		cout << "Sporul de risc este: " << SporDeRisc << endl;
+		cout << endl << "    Sporul de risc este: " << SporDeRisc << endl;
 
 	}
-	/*static void setSporDeRisc(int SpoDeRiscNou)
-	{
-		SporDeRisc = SpoDeRiscNou;
-	}*/
+
 	string getNume()
 	{
-		return this->nume;
+		return this->Nume;
 	}
-	void setNume(string nume)
+	void setNume(string Nume)
 	{
-		if (nume.length() > 2)
+		if (Nume.length() > 2)
 		{
-			this->nume = nume;
+			this->Nume = Nume;
 		}
 	}
 	string getProfesie()
@@ -152,89 +155,128 @@ public://trec din public in privat
 		}
 
 	}
-	int getVechime()
+	int getNrAniVechime()
 	{
-		return this->vechime;
+		return this->NrAniVechime;
 	}
-	void setVechime(int vechime)
+	void setNrAniVechime(int NrAniVechime)
 	{
-		if (vechime != 0)
+		if (NrAniVechime != 0)
 		{
-			this->vechime = vechime;
+			this->NrAniVechime = NrAniVechime;
 		}
 	}
-	int getAn()
-	{
-		return this->an;
-	}
-	/*void setAn(int an)
-	{
-		if (an != 0)
-		{
-			this->an = an+1;
-		}
-	}*/
+
 	const  int getId()
 	{
 		return this->id;//la const nu se poate modifica pt ca este constant
 	}
-	void setAn(int an)
+
+
+
+	void setSalariu(int NrAniVechime, float* Salariu)
 	{
-		if (an != 0)
+		if (NrAniVechime > 0)
 		{
-			this->an = an;
-
-		}
-		an++;
-	}
-
-
-	void setSalariu(int an, int* salariu2)
-	{
-		if (vechime > 0)
-		{
-			this->vechime = vechime;
-			if (this->salariu != NULL)
+			this->NrAniVechime = NrAniVechime;
+			if (this->Salariu != NULL)
 			{
-				delete[]this->salariu;
+				delete[]this->Salariu;
 			}
-			this->salariu = new int[vechime];
-			for (int i = 0;i < vechime;i++)
+			this->Salariu = new float[NrAniVechime];
+			for (int i = 0;i < NrAniVechime;i++)
 			{
-				this->salariu[i] = salariu2[i];
+				this->Salariu[i] = Salariu[i];
 			}
 		}
 	}
-	int* getSalariu()
+	float* getSalariu()
 	{
-		return this->salariu;
+		return this->Salariu;
 	}
-	/*	void setAn(int an)
+	friend int getNrAniVechime2(Angajat a);
+	friend string getNume2(Angajat b);
+
+
+	Angajat operator+(const Angajat& a)//operator+-supraincarcare
+	{
+		Angajat aux = *this;//valoare lui this
+		aux.NrAniVechime = this->NrAniVechime + a.NrAniVechime;
+		if (aux.Salariu != NULL)
 		{
-			if (an != 0)
+			delete[]aux.Salariu;//eliberez spatiu
+		}
+		if (aux.NrAniVechime > 0)
+		{
+			aux.Salariu = new float[aux.NrAniVechime];//aloc spatiu
+			for (int i = 0;i < this->NrAniVechime;i++)
 			{
-				this->an = an;
-				an++
+				aux.Salariu[i] = Salariu[i];
+
+			}
+			for (int i = this->NrAniVechime;i < aux.NrAniVechime;i++)
+			{
+				aux.Salariu[i] = a.Salariu[i - NrAniVechime];
 			}
 		}
-		*/
-	int getSalariu(int index)
-	{
-		return this->salariu[index];
+		else
+		{
+			aux.Salariu = NULL;
+		}
+		return aux;
+
 	}
+	friend ostream& operator<< (ostream& iesire, Angajat& a)//operator<<
+	{
+		iesire << "Id : " << a.getId() << "." << endl << "Nume  Angajat : " << a.getNume() << "." << endl << "Profesie: " << a.getProfesie() << " ." << endl << " Spor de risc: " << a.getSporDeRisc() << " . " << endl << " Angajatul are " << a.getNrAniVechime() << " ani vechime.  " << endl;
+		if (a.getNrAniVechime() != NULL)
+
+		{
+			iesire << " Salariul pentru fiecare an : ";
+			for (int i = 0; i < a.getNrAniVechime(); i++)
+			{
+
+				iesire << a.getSalariu()[i] << ",";
+			}
+		}
+		else
+		{
+			iesire << "-";
+		}
+		iesire << endl;
+		return iesire;
+	}
+	//operator->
+	Angajat* operator->()
+	{
+		cout << "Ani de vechime fara promovare:";
+		this->NrAniVechime = 1;
+		return this;
+	}
+
 };
+int getNrAniVechime2(Angajat a)//functii globale
+{
+	return a.NrAniVechime;
+
+
+}
+string getNume2(Angajat b)
+{
+	return b.Nume;
+}
+
+
 
 int Angajat::SporDeRisc = 2;
-
 class Firma
 {
 private:
-	const int CodCaen;//atribut constant//get+set
-	string nume;//get+set
+	const int CodCaen;//atribut constant
+	string nume;
+	int nrAniVechime;
 	float* CifraDeAfaceri;
 	int nrAngajati;
-	int vechime;
-	int an;
 	static float PlatitoareTVA;//atribut static
 public:
 	static float getPlatitoareTVA()
@@ -243,66 +285,83 @@ public:
 	}
 	static void setPlatitoareTVA(float TVA)
 	{
-		if (TVA !=0)
+		if (TVA != 0)
 		{
 			Firma::PlatitoareTVA = TVA;
 		}
 	}
 
-	Firma() :CodCaen(2573)
+	Firma() :CodCaen(2573)//primul constructor de initializare
 	{
 		this->nume = " Firma ";
+		this->nrAniVechime = 0;
 		this->CifraDeAfaceri = NULL;
 		this->nrAngajati = 0;
-		this->vechime = 0;
-		this->an = 0;
+
 	}
-	Firma(int CodCaenNou, string nume) :CodCaen(CodCaenNou)
+	Firma(int CodCaenNou, string nume) :CodCaen(CodCaenNou)// al doilea care primeste 2 parametrii
 	{
 		this->nume = nume;
-		//this->nrAngajati = 0;
+		this->nrAngajati = 0;
+		this->nrAniVechime = 0;
 		this->CifraDeAfaceri = NULL;
-		//this->vechime=0
+
 	}
-	Firma(int CodCaen, string nume, int nrAngajati, int vechime, float* CifraDeAfaceri, int an) :CodCaen(CodCaen), nume(nume), nrAngajati(nrAngajati), vechime(vechime), an(an)
+	Firma(int CodCaen, string nume, int nrAngajati, int nrAniVechime, const float* CifraDeAfaceri) :CodCaen(CodCaen)//al treilea constructor cu lista de parametrii
 	{
-		if (vechime != 0)
+
+		this->nume = nume;
+		this->nrAngajati = nrAngajati;
+		this->nrAniVechime = nrAniVechime;
+		this->CifraDeAfaceri = new float[nrAniVechime];
+		for (int i = 0; i < nrAniVechime; i++)
 		{
-			this->CifraDeAfaceri = new float[vechime];
-			for (int i = 0;i < vechime;i++)
-			{
-				this->CifraDeAfaceri[i] = CifraDeAfaceri[i];
-			}
+			this->CifraDeAfaceri[i] = CifraDeAfaceri[i];
+		}
+
+	}
+
+
+	Firma(const Firma& f) : CodCaen(f.CodCaen)  //constructor de copiere 
+	{
+		this->nume = f.nume;
+		this->nrAniVechime = f.nrAniVechime;
+		this->CifraDeAfaceri = new float[nrAniVechime];
+		for (int i = 0; i < nrAniVechime; i++) {
+
+			this->CifraDeAfaceri[i] = f.CifraDeAfaceri[i];
 
 		}
-		else
-			this->CifraDeAfaceri = NULL;
+		this->nrAngajati = f.nrAngajati;
+
+
 
 	}
-	//constructor de copiere 
-	Firma operator=(const Firma& f)
+
+
+	Firma operator=(const Firma& f)// operatorul =
 	{
 		if (this != &f)
 		{
-			if (this->vechime != NULL)
+			this->nume = f.nume;
+			this->nrAniVechime = f.nrAniVechime;
+			if (this->CifraDeAfaceri != NULL) {
 				delete[]this->CifraDeAfaceri;
-			nume = f.nume;
-			vechime = f.vechime;
-			CifraDeAfaceri = new float[vechime];
-			if (vechime!= 0)
-			{
-				this->CifraDeAfaceri = new float[vechime];
-				for (int i = 0; i < vechime; i++)
-				{
-					this-> CifraDeAfaceri[i] = f.CifraDeAfaceri[i];
-				}
 			}
-			else this->CifraDeAfaceri = NULL;
+
+			this->CifraDeAfaceri = new float[nrAniVechime];
+			for (int i = 0; i < nrAniVechime; i++) {
+
+				this->CifraDeAfaceri[i] = f.CifraDeAfaceri[i];
+
+			}
+			this->nrAngajati = f.nrAngajati;
+			return *this;
 		}
-		return *this;
 	}
 
-	~Firma()
+
+	~Firma()//destructor
 	{
 		if (this->CifraDeAfaceri != NULL)
 		{
@@ -315,14 +374,14 @@ public:
 		cout << " Nume firma: " << nume << endl;
 		cout << " Cod CAEN: " << CodCaen << endl;
 		cout << " Numar de angajati:  " << nrAngajati << endl;
-		cout << " Vechimea firmei: " << vechime << endl;
-		if (vechime != NULL)
+		cout << " Vechimea firmei :  " << nrAniVechime << endl;
+		if (nrAniVechime != NULL)
 		{
 			cout << " Cifra de afaceri (mii euro) pentru fiecare an este:" << endl;
-			for (int i = 0;i < vechime;i++)
+			for (int i = 0; i < nrAniVechime; i++)
 			{
 
-				cout << " An: " << an++ << "/" << CifraDeAfaceri[i] << " " << endl;
+				cout << " Anul: " << i << "/" << CifraDeAfaceri[i] << " " << endl;
 
 			}
 		}
@@ -330,7 +389,7 @@ public:
 		{
 			cout << " Firma nu are rulaj" << endl;
 		}
-		cout << "TVA-ul platit de firma este: " << PlatitoareTVA;
+		cout << "TVA-ul platit de firma este: " << PlatitoareTVA << endl;
 
 	}
 	void setNume(string nume)
@@ -345,345 +404,640 @@ public:
 	{
 		return this->nume;
 	}
-	const int GetCodCaen()//pt atributul constant
+	const int getCodCaen()//pt atributul constant
 	{
 		return this->CodCaen;
 	}
-	int GetNrAngajati()
+	int getNrAngajati()
 	{
 		return this->nrAngajati;
 	}
-	void setNrAngajati(int NrAngajati)
+	void setNrAngajati(int nrAngajati)
 	{
-		if (NrAngajati > 0)
+		if (nrAngajati > 0)
 		{
-			this->nrAngajati = NrAngajati;
+			this->nrAngajati = nrAngajati;
 
 		}
-	}
-	int getVechime()
-	{
-		return this->vechime;
-	}
-	void setVechime(int vechime)
-	{
-		if (vechime != 0)
+		else
 		{
-			this->vechime = vechime;
+			this->nrAngajati = 0;
 		}
-	}
-	int getAn()
-	{
-		return this->an;
-	}
-	const  int getCodCaen()
-	{
-		return this->CodCaen;//la const nu se poate modifica pt ca este constant
-	}
-	void setAn(int an)
-	{
-		if (an != 0)
-		{
-			this->an = an;
 
-		}
-		an++;
 	}
-	void setCifra(int an, float* Cifra)
+	int getAniVechime()
 	{
-		if (vechime > 0)
-		{
-			this->vechime = vechime;
-			if (this->CifraDeAfaceri!= NULL)
-			{
-				delete[]this->CifraDeAfaceri;
-			}
-			this->CifraDeAfaceri = new float[vechime];
-			for (int i = 0;i < vechime;i++)
-			{
-				this->CifraDeAfaceri[i] = Cifra[i];
-			}
-		}
+		return this->nrAniVechime;
 	}
-	float* getCifraDeAfaceri()
+	void setAniVechime(int nrAniVechime)
+	{
+
+		this->nrAniVechime = nrAniVechime;
+	}
+
+
+	void setCifra(int nrAniVechime, float* Cifra)
+	{
+
+		this->nrAniVechime = nrAniVechime;
+
+		if (this->CifraDeAfaceri != NULL)
+		{
+			delete[]this->CifraDeAfaceri;
+		}
+		this->CifraDeAfaceri = new float[nrAniVechime];
+		for (int i = 0; i < nrAniVechime; i++)
+		{
+			this->CifraDeAfaceri[i] = Cifra[i];
+		}
+
+	}
+
+
+
+	float* getCifradeAfaceri()
 	{
 		return this->CifraDeAfaceri;
 	}
 
 
 
-	//static void setPlatitoareTVA(float TVANou)//functia statica
-	//{
-	//	PlatitoareTVA = TVANou;
-	//}
-};
-float Firma::PlatitoareTVA = 0.19;
-class SalariuInvatamant
+	friend istream& operator>>(istream& intrare, Firma& firma);//functii prietene
+
+	friend ostream& operator<<(ostream& iesire, const Firma& firma);
+	float operator()()
 	{
-	private:
-		string PozitieAngajat;
-		float OreLucrate;
-		float valoare;
-		static float SalariuMinim;
-		float* adaosGrad;
-		const int CodCOR;
-	public:
-		static float getSalariuMinim()//doar citire, functia statica
+		float suma = 0;
+		for (int i = 0;i < this->nrAniVechime;i++)
 		{
-			return SalariuInvatamant::SalariuMinim;
+			suma += this->CifraDeAfaceri[i];
+		}
+		return suma;
+	}
+	Firma operator++(int)
+	{
+		Firma copie = *this;
+		this->nrAngajati = nrAngajati++;
+
+		return *this;
+	}
+	Firma* operator->()
+	{
+		this->nrAniVechime = 15;
+		return this;
+
+
+	}
+
+};
+
+float Firma::PlatitoareTVA = 0.19;
+ostream& operator<<(ostream& iesire, Firma& firma)
+{
+	iesire << "Cod Caen:" << firma.getCodCaen() << endl << "Nume firma: " << firma.getNume() << endl << "Numar angajati: " << firma.getNrAngajati() << endl << " Numar ani vechime :" << firma.getAniVechime() << endl;
+	if (firma.getAniVechime() != NULL)
+
+	{
+		iesire << "Cifrele de afaceri din ultimii ani :";
+		for (int i = 0;i < firma.getAniVechime();i++)
+		{
+
+			iesire << "  " << firma.getCifradeAfaceri()[i] << " , ";
+		}
+	}
+	else
+	{
+		iesire << "-";
+	}
+	iesire << endl;
+	return iesire;
+
+};
+
+istream& operator>>(istream& intrare, Firma& firma)
+{
+	cout << "Nume firma: " << endl;
+	intrare >> firma.nume;
+	cout << " Numar ani vechime:" << endl;
+	intrare >> firma.nrAniVechime;
+	cout << " Numar angajati: " << endl;
+	intrare >> firma.nrAngajati;
+	if (firma.CifraDeAfaceri != NULL)
+	{
+		delete[]firma.CifraDeAfaceri;
+	}
+	if (firma.nrAniVechime > 0)
+	{
+		firma.CifraDeAfaceri = new float[firma.nrAniVechime];
+		for (int i = 0;i < firma.nrAniVechime;i++)
+		{
+			cout << " Cifra de afaceri a firmei ( mii euro): " << i + 1 << ":";
+			intrare >> firma.CifraDeAfaceri[i];
+		}
+	}
+	else
+	{
+		cout << " Nu exista cifra de afaceri, firma nu are rulaj";
+		firma.CifraDeAfaceri = NULL;
+	}
+	return intrare;
+
+
+
+}
+class SalariuInvatamant
+{
+private://declar atributele
+	string PozitieAngajat;
+	int NrGrade;
+	int Valoare;
+	float* AdaosGrad;//depinde de gradele obtinute
+	static float SalariuMinim;
+	const int CodCOR;
+public:
+	static float getSalariuMinim()//doar citire, functia statica
+	{
+		return SalariuInvatamant::SalariuMinim;
+
+	}
+	static void setSalariuMinim(float salariu)//accesez si modific
+	{
+		if (salariu > 0)
+		{
+			SalariuInvatamant::SalariuMinim = salariu;//atributul static
+		}
+	}
+
+
+	SalariuInvatamant() :CodCOR(23)//constructor 1-initializez atributele
+	{
+
+		this->PozitieAngajat = "  Tip profesor ";
+		this->NrGrade = 0;
+		this->Valoare = 0;
+		this->AdaosGrad = NULL;
+
+	}
+	SalariuInvatamant(int CodCORNou, string PozitieAngajat) :CodCOR(CodCORNou)//constr cu 2 param
+	{
+
+		this->PozitieAngajat = PozitieAngajat;
+		this->NrGrade = 0;
+		this->Valoare = 0;
+		this->AdaosGrad = NULL;
+
+	}
+	SalariuInvatamant(int CodCOR, string PozitieAngajat, int NrGrade, int Valoare, const int* AdaosGrad) :CodCOR(CodCOR), PozitieAngajat(PozitieAngajat), NrGrade(NrGrade), Valoare(Valoare)
+	{
+
+		if (NrGrade != NULL)
+		{
+			this->AdaosGrad = new float[NrGrade];
+			for (int i = 0;i < NrGrade;i++)
+			{
+				this->AdaosGrad[i] = AdaosGrad[i];
+			}
 
 		}
-		static void setSalariuMinim(float salariu)//accesez si modific
+		else
+			this->AdaosGrad = NULL;//constructor cu mai multi param
+	}
+	SalariuInvatamant(const SalariuInvatamant& s) :CodCOR(s.CodCOR)//de copiere
+	{
+		cout << "Constructor de copiere" << endl;
+		PozitieAngajat = s.PozitieAngajat;
+		NrGrade = s.NrGrade;
+		//valoare = s.valoare;
+
+		if (NrGrade != 0)
 		{
-			if (salariu > 0)
+			this->AdaosGrad = new float[NrGrade];
+			for (int i = 0;i < NrGrade;i++)
 			{
-				SalariuInvatamant::SalariuMinim = salariu;
+				this->AdaosGrad[i] = s.AdaosGrad[i];
 			}
 		}
+		else
+			this->AdaosGrad = NULL;
 
-	
-		SalariuInvatamant() :CodCOR(23)
+	}
+	SalariuInvatamant operator=(const SalariuInvatamant& s)//operatorul=
+	{
+		if (this != &s)
 		{
-			this->PozitieAngajat = "  Tip profesor ";
-			this->OreLucrate = 0;
-			this->valoare = 0;
-			this->adaosGrad = NULL;
-	
-		}
-		SalariuInvatamant(int CodCORNou, string PozitieAngajat) :CodCOR(CodCORNou)
-		{
-			this->PozitieAngajat = PozitieAngajat;
-			this->OreLucrate = 0;
-			this->adaosGrad = NULL;
-	
-		}
-		SalariuInvatamant(int CodCOR, string PozitieAngajat, float OreLucrate, float valoare, int* adaosGrad) :CodCOR(CodCOR), PozitieAngajat(PozitieAngajat), OreLucrate(OreLucrate), valoare(valoare)
-		{
-			if (OreLucrate != NULL)
+			if (this->AdaosGrad != NULL)
 			{
-				this->adaosGrad = new float[OreLucrate];
-				for (int i = 0;i < OreLucrate;i++)
-				{
-					this->adaosGrad[i] = adaosGrad[i];
-				}
-	
-			}
-			else
-				this->adaosGrad = NULL;
-		}
-		SalariuInvatamant (const SalariuInvatamant& s) :CodCOR(s.CodCOR)
-		{
-			PozitieAngajat = s.PozitieAngajat;
-			OreLucrate = s.OreLucrate;
-			adaosGrad = new float[OreLucrate];
-			if (OreLucrate != 0)
-			{
-				this->adaosGrad = new float[OreLucrate];
-				for (int i = 0;i < OreLucrate;i++)
-				{
-					this->adaosGrad[i] = s.adaosGrad[i];
-				}
-			}
-			else
-				this->adaosGrad = NULL;
-
-		}
-		SalariuInvatamant operator=(const SalariuInvatamant& s)
-		{
-			if (this != &s)
-			{
-				if (this->adaosGrad != NULL)
-				{
-					delete[]this->adaosGrad;
-					PozitieAngajat = s.PozitieAngajat;
-					OreLucrate = s.OreLucrate;
-					adaosGrad = new float[OreLucrate];
-				}
-				if (OreLucrate != 0)
-				{
-					this->adaosGrad = new float[OreLucrate];
-					for (int i = 0;i < OreLucrate;i++)
-					{
-						this->adaosGrad[i] = s.adaosGrad[i];
-					}
-
-				}
-				else this->adaosGrad= NULL;
+				delete[]this->AdaosGrad;
+				PozitieAngajat = s.PozitieAngajat;
+				NrGrade = s.NrGrade;
 
 			}
-			return *this;
-		}
-		~SalariuInvatamant()
-		{
-			if (this->adaosGrad != NULL)
+			if (NrGrade != 0)
 			{
-				delete[]this->adaosGrad;
-			}
-		}
-		void afisare()
-		{
-			cout << " Codul COR este: " << CodCOR << endl;
-			cout << " Tip cadru: " << PozitieAngajat << endl;
-			cout << " Numar de ore lucrate: " << OreLucrate << endl;
-			cout << " Salariul: " << valoare;
-			if (adaosGrad != NULL)
-			{
-				for (int i = 0;i < OreLucrate;i++)
+				this->AdaosGrad = new float[NrGrade];
+				for (int i = 0;i < NrGrade;i++)
 				{
-					this->adaosGrad[i] = adaosGrad[i];
-	
-					cout << endl << "Adaos[" << i + 1 << "]=" << adaosGrad[i] << endl;
+					this->AdaosGrad[i] = s.AdaosGrad[i];
 				}
+
 			}
-			else
-			{
-				cout << " - " << endl;
-			}
-			cout << "Salariul minim este:" << SalariuMinim << endl;
-			cout << endl;
-	
+			else this->AdaosGrad = NULL;
+
 		}
-		/*static void setSalariuMinim(float SalariuMinimNou)
+		return *this;
+		cout << endl;
+	}
+	~SalariuInvatamant()//destructor
+	{
+		if (this->AdaosGrad != NULL)
 		{
-			SalariuMinim = SalariuMinimNou;
-		}*/
+			delete[]this->AdaosGrad;
+		}
+	}
+	void afisare()
+	{
+		cout << " Codul COR este: " << CodCOR << endl;
+		cout << " Tip cadru: " << PozitieAngajat << endl;
+		cout << " Numar de grade obtinute: " << NrGrade << endl;
+		cout << " Salariul: " << Valoare;
+		if (AdaosGrad != NULL)
+		{
+			for (int i = 0;i < NrGrade;i++)
+			{
+				this->AdaosGrad[i] = AdaosGrad[i];
+
+				cout << endl << "Adaos[" << i + 1 << "]=" << AdaosGrad[i] << endl;
+			}
+		}
+		else
+		{
+			cout << " - " << endl;
+		}
+		cout << "Salariul minim este:" << SalariuMinim << endl;
+		cout << endl;
+
+	}
+	/*static void setSalariuMinim(float SalariuMinimNou)//functie statica
+	{
+		SalariuMinim = SalariuMinimNou;
+	}*/
+	void setPozitieAngajat(string PozitieAngajat)
+
+	{
+		this->PozitieAngajat = PozitieAngajat;
+
 	};
-	float SalariuInvatamant::SalariuMinim = 3000;
-	
+	string getPozitieAngajat()
+	{
+		return  this->PozitieAngajat;
+	}
+
+	const int getCodCOR()
+	{
+		return this->CodCOR;
+	}
+	void setValoare(int  Valoare)
+	{
+
+		this->Valoare = Valoare;
+
+	}
+	float getValoare()
+	{
+		return this->Valoare;
+	}
+	void setNrGrade(int NrGrade)
+	{
+		if (NrGrade != 0)
+		{
+			this->NrGrade = NrGrade;
+
+		}
+	}
+	int getNrGrade()
+	{
+		return this->NrGrade;
+	}
+	void setAdaosGrad(int NrGrade, float* Adaos)//setter compus pt ca un atrb depinde de altul
+	{
+		if (NrGrade > 0)
+		{
+			this->NrGrade = NrGrade;
+			if (this->AdaosGrad != NULL)
+			{
+				delete[]this->AdaosGrad;
+			}
+			this->AdaosGrad = new float[NrGrade];
+			for (int i = 0; i < NrGrade; i++)
+			{
+				this->AdaosGrad[i] = Adaos[i];
+			}
+		}
+	}
+	float* getAdaosGrad()
+	{
+		return this->AdaosGrad;
+	}
+	friend istream& operator>>(istream& intrare, SalariuInvatamant& salariu);//functiile globale si prietene
+
+	friend ostream& operator<<(ostream& iesire, const SalariuInvatamant& salariu);
+
+	SalariuInvatamant operator--(int)
+	{
+		SalariuInvatamant copie = *this;
+		this->Valoare = Valoare--;
+		return copie;
+
+	}
+	int operator [](int index)
+	{
+		if (index >= 0 && index < NrGrade)
+		{
+			return AdaosGrad[index];
+		}
+	}
+	operator int()//operator de cast
+	{
+		return Valoare;
+
+	}
+};
+
+float SalariuInvatamant::SalariuMinim = 3000;
+//functii globale
+//cout << "Operator <<";
+ostream& operator<<(ostream& iesire, SalariuInvatamant& salariu)
+{
+
+	iesire << "Codul COR: " << salariu.getCodCOR() << "." << endl << "Pozitie Angajat : " << salariu.getPozitieAngajat() << "." << endl << "Salariul Minim: " << salariu.getSalariuMinim() << "lei " << endl << " Salariul real: " << salariu.getValoare() << " lei, valoarea reala pentru  " << salariu.getNrGrade() << " grade obtinute.    " << endl;
+	if (salariu.getAdaosGrad() != NULL)
+
+	{
+		iesire << " Adaosului salariului pentru gradele obtinute: ";
+		for (int i = 0; i < salariu.getNrGrade(); i++)
+		{
+
+			iesire << salariu.getAdaosGrad()[i] << ",";
+		}
+	}
+	else
+	{
+		iesire << "-";
+	}
+	iesire << endl;
+	return iesire;
+};
+istream& operator>>(istream& intrare, SalariuInvatamant& salariu)
+{
+	cout << "Pozitie Angajat:";
+	intrare >> salariu.PozitieAngajat;
+	cout << "Valoarea salariului: ";
+	intrare >> salariu.Valoare;
+	cout << "Grade obtinute: ";
+	intrare >> salariu.NrGrade;
+	if (salariu.AdaosGrad != NULL)
+	{
+		delete[]salariu.AdaosGrad;
+	}
+	if (salariu.NrGrade > 0)
+
+	{
+		salariu.AdaosGrad = new float[salariu.NrGrade];
+		for (int i = 0; i < salariu.NrGrade; i++)
+		{
+			cout << "Adaosul salariului:  " << i + 1 << ":";
+			intrare >> salariu.AdaosGrad[i];
+		}
+	}
+	else
+	{
+		cout << "Nu exista  adaos. ";
+		salariu.AdaosGrad = NULL;
+	}
+	return intrare;
+	cout << endl;
+
+}
 
 void main()
 {
-	int* salariu;
-	salariu = new int[3];
-	salariu[0] = 1000;
-	salariu[1] = 1500;
-	salariu[2] = 2000;
-	int* salariu2 = new int[4];
-	salariu2[0] = 4000;
-	salariu2[1] = 4600;
-	salariu2[2] = 4900;
-	salariu2[3] = 5005;
-	int* An;
-	An = new int[3];
-	An[0] = 2021;
-	An[1] = 2022;
-	An[2] = 2023;
-	An[3] = 2024;
-
 	cout << endl << "Clasa angajat" << endl;
-	Angajat ang1;
+	float Salariu1[] = { 500, 100,1120 };
+	cout << "Angajat1" << endl;
+	Angajat ang1;//constructorul de initializare
 	ang1.afisare();
 	cout << endl;
-	Angajat ang2(7, " Ionescu Andreea", " profesoara");
+	cout << "Angajat2" << endl;
+	Angajat ang2(7, " Ionescu Andreea", " Inginer sef ");//constructorul cu 3 parametrii
 	ang2.afisare();
-	//Angajat ang3(101, "Georgescu Ioana", "asistent", 3, *salariu);
-	//Angajat::setSporDeRisc(4);
-	//ang3.afisare();
-	Angajat ang3(102, " Popescu Alin ", " inginer ", 4, salariu2, *An);
-	Angajat::setSporDeRisc(5);
+	cout << endl;
+	cout << "Angajat3" << endl;
+	Angajat ang3(4, "Georgescu ", "Asistent", 3, Salariu1);//apelez constr cu toti parametrii
+	Angajat::setSporDeRisc(4);
 	ang3.afisare();
 	cout << endl;
-	Angajat ang4(ang2);//apelez constr de copiere
+	cout << "Angajat4- constr copiere" << endl;
+	Angajat ang4(ang2);//apelez constructorul de copiere
 	ang4.afisare();
-	Angajat ang5 = ang1;//alt mod de a scrie apelul pt construct de copiere
-	ang5.afisare();
-	//Angajat ang6;
-	//ang6 = ang1;//apelez operatorul=
-	//ang6.afisare();
-	//ang2 = ang2;
-	ang2.afisare();
-	ang2.setNume("Popescu Adela");//apelez setterul si getterul 
-	cout << ang2.getNume() << endl;
-	ang2.setProfesie("Analist financiar");
-	cout << ang2.getProfesie() << endl;
-	ang2.setVechime(3);
-	
-	cout << ang2.getVechime() << endl;
-	ang2.setAn(2015);
-	cout << ang2.getAn() << endl;
-	ang2.setAn(2016);
-	cout << ang2.getAn() << endl;
-	ang2.setAn(2017);
-	cout << ang2.getAn() << endl;
-	int* salariu1 = new int[3] {2000, 2200, 2300};
-	ang2.setSalariu(3, salariu1);
-	cout << ang2.getSalariu() << endl;
-	ang2.afisare();
-	//cout << ang2.getSalariu()[3];
-cout << endl << "Clasa Firma" << endl;
-	int* an;
-	an = new int[3];
-	an[0] = 2016;
-	an[1] = 2017;
-	an[3] = 2018;
-	float* Cifra;
-	Cifra = new float[3];
-	Cifra[0] = 166.9;
-	Cifra[1] = 998.99;
-	Cifra[2] = 5678.9;
-	Firma firma1;
-	firma1.afisare();
-	Firma::setPlatitoareTVA(0.20);
 	cout << endl;
-	Firma firma2(6972, "SC.RAMYCONT.SRL");
+	cout << "Angajat6- operator =" << endl;
+	Angajat ang6;
+	ang6 = ang3;//apelez operatorul=
+	ang6.afisare();
+	cout << endl;
+	cout << "functii get si set" << endl;//functii de get si set
+	cout << endl;
+	ang2.setNume("Popescu Adela");
+	cout << "Nume nou:" << ang2.getNume() << endl;
+
+	ang2.setProfesie("Analist financiar");
+	cout << "Noua profesie:" << ang2.getProfesie() << endl;
+
+	ang2.setNrAniVechime(3);
+
+	cout << "Ani vechime: " << ang2.getNrAniVechime() << endl;
+
+
+
+	float* salariu1 = new float[3] {2000, 2200, 2300};
+	ang2.setSalariu(3, salariu1);
+	//cout << ang2.getSalariu() << endl;
+	//ang2.afisare();
+
+	float* SalariuObtinut = ang2.getSalariu();
+	for (int i = 0;i < 3;i++)
+	{
+		cout << "Salariu obtinut: [" << i + 1 << "]: ";
+		cout << SalariuObtinut[i] << "" << endl;
+	}
+
+
+	cout << endl;
+	cout << "Functii globale:" << endl;
+	cout << "Schimb vechime:" << getNrAniVechime2(ang3) << endl;//functia globala
+	cout << "Schimb nume:" << getNume2(ang3) << endl;//functie globala
+	cout << endl;
+	//supraincarcare operatori
+	cout << "Operator +" << endl;
+	cout << "Angajatul 1 :" << endl;
+	ang1.afisare();
+	ang1 = ang4 + ang1;//nu merge
+	ang1.afisare();
+	cout << endl;
+	cout << " Operator iesire" << endl;
+	cout << ang3;
+	cout << endl;
+	cout << "Operator atribuire " << endl;
+	Angajat ang8;
+	ang8.setNrAniVechime(5);
+	cout << "Ani de vechime:" << ang8.getNrAniVechime() << endl;
+	cout << ang8->getNrAniVechime() << endl;
+	cout << endl;
+	cout << endl << "Clasa Firma" << endl;
+	float Cifra[] = { 1.9, 9.9, 5.9 };
+	cout << "Firma1 ";
+	Firma firma1;
+	firma1.afisare();//primul constr
+	Firma::setPlatitoareTVA(0.20);//functie statica
+	cout << endl;
+	cout << "Firma2" << endl;
+	Firma firma2(6972, "SC.RAMYCONT.SRL");//al doilea constructor
 	Firma::setPlatitoareTVA(0.21);
 	firma2.afisare();
 	cout << endl;
-
-
-	Firma firma3(7765, "SC.IMOBILIAR GRUP SRL", 27, 3, Cifra, *an);
+	cout << "Firma3 " << endl;
+	Firma firma3(7765, "SC.IMOBILIAR GRUP SRL", 27, 3, Cifra);//al treilea constructor
 	Firma::setPlatitoareTVA(0.18);
 	firma3.afisare();
-	Firma firma4(firma1);//apelez constr de copiere
 	cout << endl;
-	//F/*irma firma5;
-	//firma5 = firma3;
-	//firma4.afisare();
-	//firma5.afisare();*/
+	cout << "Firma4 " << endl;
+	Firma firma4(firma3);
+	firma4.afisare();//apelez constr de copiere
 	cout << endl;
-	Firma firma6(firma2);
-	firma6.setNume(" SC.DANYCOM.SRL");
-	cout << "Numele nou" << firma6.getNume() << endl;
-	firma6.setPlatitoareTVA(0.23);
-	cout << "Noul TVA :" << firma6.getPlatitoareTVA() << endl;
-	firma6.setNrAngajati(3);
-	cout << "Noul nr angajati : " << firma6.GetNrAngajati() << endl;
-	firma6.setVechime(4);
-	cout << "Vechimea actuala: " << firma6.getVechime() << endl;
-	firma6.setAn(2014);
-	cout << "Anii de functionare ai firmei : "<<endl<<firma6.getAn() << endl;
-	firma6.setAn(2015);
-	cout << firma6.getAn() << endl;
-	firma6.setAn(2016);
-	cout << firma6.getAn() << endl;
-	firma6.setAn(2017);
-	cout << firma6.getAn() << endl;
-	 float* CifraDeAfaceri1 = new float[34] {2.2, 1.8, 2.0, 1.4};
+	cout << "Firma5" << endl;
+	Firma firma5;//apelez pt operatorul=
+	firma5 = firma3;
+	firma5.afisare();
+	cout << endl;
+	cout << "Firma 6" << endl;
+	Firma firma6;
+	firma6 = firma4;
+	float* CifraDeAfaceri1 = new float[4] {2.2, 1.8, 2.0, 1.4};
 	firma6.setCifra(4, CifraDeAfaceri1);
-	cout << firma6.getCifraDeAfaceri()[4];
-	firma6.afisare();
-	//cout<<" Cifra de afaceri corespunzatoare anilor(mii euro): "<<firma6.getCifraDeAfaceri() << endl;//nu apar valorile , doar o adresa
-	//cout << firma6.getCifraDeAfaceri()[4];
-             cout << endl << "Clasa salariu" << endl;
-		
-		
-			int* adaosSalariu;
-			adaosSalariu = new int[2];
-			adaosSalariu[0] = 500;
-			adaosSalariu[1] = 1000;
-			SalariuInvatamant Sal1;
-			SalariuInvatamant::setSalariuMinim(2800);
-			Sal1.afisare();//apelez primul constructor
-			SalariuInvatamant Sal2(2310, " Profesor univeristar ");
-			Sal2.afisare();
-			SalariuInvatamant Sal3(2341, " Profesor invatamant primar ", 2, 4600, adaosSalariu);
-			SalariuInvatamant::setSalariuMinim(2300);
-			Sal3.afisare();
-			cout << "constructor de copiere "<<endl;
-			SalariuInvatamant Sal4(Sal3);//apelez constr copiere
-			Sal4.afisare();
-			cout << "operator="<<endl;
-			SalariuInvatamant Sal5;
-			Sal5 = Sal2;
-			Sal5.afisare();
-}
+
+
+	float* CifraObtinuta = firma6.getCifradeAfaceri();
+	for (int i = 0;i < 4;i++)
+	{
+		cout << "Cifra de afaceri [" << i + 1 << "]: ";
+		cout << CifraObtinuta[i] << "" << endl;
+	}
+
+	//firma6.afisare();
+	cout << endl;
+	cout << "Firma7" << endl;
+	Firma firma7;
+
+	cout << "Operator>>- intrare " << endl;
+	cin >> firma7;
+	cout << endl;
+	cout << "Operator <<-afisare intrare" << endl;
+	cout << firma7;
+	cout << endl;
+	cout << "Operator ()" << endl;
+	cout << " Suma cifrelor de afaceri: ";//operator()
+	cout << firma7() << " mii euro." << endl;//dc nu tranf suma in float
+	cout << endl;
+	cout << " Operator ++:" << endl;//modific numarul de angajati
+	cout << firma7;
+	firma7 = firma7++;
+	cout << endl;
+	cout << " Incrementare  numar angajati: " << endl;
+	cout << firma7;
+	cout << endl;
+	cout << "Operator atribuire" << endl;
+	cout << "Firma 8" << endl;
+	Firma firma8;
+	firma8.setAniVechime(2);
+	cout << "Ani de vechime:" << firma8.getAniVechime() << endl;
+	cout << "Ani de vechime dupa atribuire: " << firma8->getAniVechime() << endl;
+	delete[]CifraDeAfaceri1;
+	cout << endl;
+	cout << endl << "Clasa salariu" << endl;
+
+
+
+	int AdaosSalariu[] = { 500,1000 , 467, 200 };
+	cout << "Salariu1 - constructor initializare" << endl;
+	SalariuInvatamant Sal1;
+	Sal1.afisare();//apelez primul constructor, fara param
+	SalariuInvatamant::setSalariuMinim(2800);
+	cout << endl;
+	cout << "Salariu2- constructor 2 parametrii" << endl;
+	SalariuInvatamant Sal2(2310, " Profesor univeristar ");//al doilea constructor-2 param
+	Sal2.afisare();
+	cout << endl;
+
+	cout << "Salariu3- constructor lista parametrii" << endl;
+	SalariuInvatamant Sal3(2341, " Profesor invatamant primar ", 2, 4600, AdaosSalariu);//al 3 lea constructor, mai multi param
+	SalariuInvatamant::setSalariuMinim(2300);//accesez functia statica
+	Sal3.afisare();
+	cout << endl;
+	cout << "Salariu4 - constructor copiere" << endl;
+
+	SalariuInvatamant Sal4(Sal3);//apelez constr copiere
+	Sal4.afisare();
+	cout << endl;
+	cout << "Salariu 5- operator =" << endl;
+
+	SalariuInvatamant Sal5;
+	Sal5 = Sal3;//operatorul=
+	Sal5.afisare();
+	cout << endl;
+	cout << "Salariu6 get si set " << endl;
+
+	SalariuInvatamant Sal6;
+
+	Sal6.setPozitieAngajat(" Profesor invatamant gimnazial");//apelez get si set pt toate atributele
+	cout << "Pozitie noua: " << Sal6.getPozitieAngajat() << endl;
+	Sal6.setNrGrade(4);
+	cout << "Numar grade obtinute: " << Sal6.getNrGrade() << endl;
+	Sal6.setValoare(4000);
+	cout << "Valoare salariu : " << Sal6.getValoare() << endl;
+	float Adaos[] = { 100, 150, 200 };
+	Sal6.setAdaosGrad(3, Adaos);
+	float* adaosObtinut = Sal6.getAdaosGrad();
+	for (int i = 0;i < 3;i++)
+	{
+		cout << "Adaosul salariului[" << i + 1 << "]: ";
+		cout << adaosObtinut[i] << "" << endl;
+	}
+
+	cout << endl;
+	cout << endl;
+	cout << "Operator >>" << endl;//fctie prietena
+	cout << Sal6;//pt op<<
+	cout << endl;
+	cout << "salariu7" << endl;
+	SalariuInvatamant Sal7;
+	cout << " Operator >>" << endl;//fctie prietena
+	cin >> Sal7;
+	cout << endl;
+	cout << Sal7;
+	cout << endl;
+	cout << "Operator --";
+	Sal4.setValoare(2400);
+	Sal7 = Sal4--;
+	cout << Sal7 << endl << "Valoarea salariului este ";
+	cout << endl;
+	cout << " Index" << endl;
+	cout << "Salariu 8";
+	SalariuInvatamant Sal8(2708, " Profesor universitar stagiar", 3, 3500, new int[3] {100, 500, 1000});
+	cout << Sal8;
+	int ValoareImplicita = Sal8;///operator de cast
+	int ValoareExplicita = (int)Sal8;
+	cout << "Valoare explicita: " << ValoareExplicita << endl;
+	cout << "Valoare Implicita: " << ValoareImplicita;
+
+};
+
