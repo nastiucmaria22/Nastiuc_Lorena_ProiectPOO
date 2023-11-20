@@ -892,7 +892,37 @@ void main()
 	ang8.setNrAniVechime(5);
 	cout << "Ani de vechime:" << ang8.getNrAniVechime() << endl;
 	cout << ang8->getNrAniVechime() << endl;
+	Angajat* a_angajat = new Angajat[3];//vector de 3 obiecte;
+	a_angajat[0] = angaj1;
+	a_angajat[1] = angaj2;
+	a_angajat[2] = angaj3;
+	cout << " Vector de obiecte  angajat "<<endl;
+	for (int i = 0;i < 3;i++)
+	{
+		cout << "angajat [" << i + 1 << "]=";
+		
+		cout << a_angajat[i]<<endl;
+	}
+	delete[]a_angajat;
+	cout << "matrice" << endl;
+	Angajat** matrice = new Angajat * [3];//pointer la pointer
+	for (int i = 0;i < 3;i++)
+	{
+		matrice[i] = new Angajat[3];
+	}//aloc spatiu ptr matrice;
+	for (int i = 0;i < 3;i++)
+		for(int j=0;j<3;j++)
+		{
+			cout << matrice[i][j];
+
+	    }
+	delete[]matrice;
+
+
+
+	
 	cout << endl;
+	
 	cout << endl << "Clasa Firma" << endl;
 	float Cifra[] = { 1.9, 9.9, 5.9 };
 	cout << "Firma1 ";
@@ -962,6 +992,23 @@ void main()
 	cout << "Ani de vechime:" << firma8.getAniVechime() << endl;
 	cout << "Ani de vechime dupa atribuire: " << firma8->getAniVechime() << endl;
 	delete[]CifraDeAfaceri1;
+	Firma f1;
+	Firma f2;
+	Firma f3;
+	Firma * f_firma = new Firma[3];//vector de 3 obiecte;
+	f_firma[0] = f1;
+	f_firma[1] = f2;
+	f_firma[2] = f3;
+	cout << " Vector de obiecte  firma  " << endl;
+	for (int i = 0;i < 3;i++)
+	{
+		cout << "firma [" << i + 1 << "]=";
+
+		cout << f_firma[i] << endl;
+	}
+	delete[]f_firma;
+
+	
 	cout << endl;
 	cout << endl << "Clasa salariu" << endl;
 
@@ -1038,6 +1085,25 @@ void main()
 	int ValoareExplicita = (int)Sal8;
 	cout << "Valoare explicita: " << ValoareExplicita << endl;
 	cout << "Valoare Implicita: " << ValoareImplicita;
+	
+	SalariuInvatamant s1;
+	SalariuInvatamant s2;
+	SalariuInvatamant  s3;
+	SalariuInvatamant* s_salariu = new SalariuInvatamant[3];//vector de 3 obiecte;
+	s_salariu[0] = s1;
+	s_salariu[1] = s2;
+	s_salariu[2] = s3;
+	cout << " Vector de obiecte  salariu " << endl;
+	for (int i = 0;i < 3;i++)
+	{
+		cout << "salariu [" << i + 1 << "]=";
+
+		cout << s_salariu[i] << endl;
+	}
+	delete[]s_salariu;
+
+
+	
 
 };
 
