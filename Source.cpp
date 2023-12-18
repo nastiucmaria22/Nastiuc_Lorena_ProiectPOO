@@ -253,6 +253,7 @@ public://trec din public in privat
 		this->NrAniVechime = 1;
 		return this;
 	}
+	friend class Angajator;
 
 };
 int getNrAniVechime2(Angajat a)//functii globale
@@ -269,6 +270,7 @@ string getNume2(Angajat b)
 
 
 int Angajat::SporDeRisc = 2;
+
 class Firma
 {
 private:
@@ -425,6 +427,7 @@ public:
 		}
 
 	}
+
 	int getAniVechime()
 	{
 		return this->nrAniVechime;
@@ -543,8 +546,74 @@ istream& operator>>(istream& intrare, Firma& firma)
 	return intrare;
 
 
-
+	
 }
+class Colaborator
+{
+private:
+	string nume;
+	Firma* firma;
+	int vechime;
+public:
+	Colaborator()
+	{
+		this->nume = " Mobexpert ";
+		this->firma = NULL;
+		this->vechime = 0;
+	}
+	Colaborator(int vechime)
+	{
+		this->nume = " Dedeman ";
+		this->firma = firma;
+		this->vechime = vechime;
+	}
+	~Colaborator()
+	{
+		if (this->firma != NULL)
+		{
+			delete[]this->firma;
+		}
+	}
+	friend ostream& operator<<(ostream& iesire, const Colaborator& c)
+	{
+		iesire << " Clientul " << c.nume << " colaboreaza cu firma  de " << c.vechime << " ani " << endl;
+		iesire << " ----------------------------------------" << endl;
+		return iesire;
+	}
+	string getNumeColaborator()
+	{
+		return this->nume;
+
+	}
+	void setNumeColaborator(string numeNou)
+	{
+		this->nume = numeNou;
+	}
+	int getVechime()
+	{
+		return this->vechime;
+	}
+	void setVechime(int vechimeNoua)
+	{
+		this->vechime = vechimeNoua;
+	}
+	Firma* getFirma()
+	{
+		return this->firma;
+
+	}
+	Firma operator[](int index)
+	{
+		return this->firma[index];
+	}
+	Colaborator operator+(const Colaborator& c)
+	{
+		Colaborator aux = *this;
+		aux.vechime = this->vechime + c.vechime;
+		return aux;
+
+	}
+};
 class SalariuInvatamant
 {
 private://declar atributele
@@ -892,16 +961,19 @@ void main()
 	ang8.setNrAniVechime(5);
 	cout << "Ani de vechime:" << ang8.getNrAniVechime() << endl;
 	cout << ang8->getNrAniVechime() << endl;
+	Angajat angaj1;
+	Angajat angaj2;
+	Angajat angaj3;
 	Angajat* a_angajat = new Angajat[3];//vector de 3 obiecte;
 	a_angajat[0] = angaj1;
 	a_angajat[1] = angaj2;
 	a_angajat[2] = angaj3;
-	cout << " Vector de obiecte  angajat "<<endl;
+	cout <<endl<< " Vector de obiecte  angajat " << endl;
 	for (int i = 0;i < 3;i++)
 	{
 		cout << "angajat [" << i + 1 << "]=";
-		
-		cout << a_angajat[i]<<endl;
+
+		cout << a_angajat[i] << endl;
 	}
 	delete[]a_angajat;
 	cout << "matrice" << endl;
@@ -911,18 +983,18 @@ void main()
 		matrice[i] = new Angajat[3];
 	}//aloc spatiu ptr matrice;
 	for (int i = 0;i < 3;i++)
-		for(int j=0;j<3;j++)
+		for (int j = 0;j < 3;j++)
 		{
 			cout << matrice[i][j];
 
-	    }
+		}
 	delete[]matrice;
 
 
 
-	
+
 	cout << endl;
-	
+
 	cout << endl << "Clasa Firma" << endl;
 	float Cifra[] = { 1.9, 9.9, 5.9 };
 	cout << "Firma1 ";
@@ -963,7 +1035,7 @@ void main()
 		cout << CifraObtinuta[i] << "" << endl;
 	}
 
-	//firma6.afisare();
+	firma6.afisare();
 	cout << endl;
 	cout << "Firma7" << endl;
 	Firma firma7;
@@ -995,7 +1067,7 @@ void main()
 	Firma f1;
 	Firma f2;
 	Firma f3;
-	Firma * f_firma = new Firma[3];//vector de 3 obiecte;
+	Firma* f_firma = new Firma[3];//vector de 3 obiecte;
 	f_firma[0] = f1;
 	f_firma[1] = f2;
 	f_firma[2] = f3;
@@ -1007,8 +1079,29 @@ void main()
 		cout << f_firma[i] << endl;
 	}
 	delete[]f_firma;
+	cout << endl<<"~~ has a ~~ " << endl;
 
+	Colaborator client1;
+
+	cout << client1;
+	Colaborator client2(3);
+	cout << client2;
+	client2.setNumeColaborator(" Ikea ");
+	client2.setVechime(5);
+	cout << "get pt nume: "<< client2.getNumeColaborator()<<endl<<"get pt vechime : " << client2.getVechime() << endl;
+	/*cout << *client2.getFirma();*/
+	cout << client2 <<endl;
 	
+	Colaborator client3(8);
+	Colaborator client4;
+	cout <<client4 <<endl<< client3;
+	cout << endl << "Operator + " << endl;
+	client4.setNumeColaborator("Leroy Merlin");
+	client4.getNumeColaborator();
+	client4 = client3 + client2;
+	cout << client4;
+	cout << " ";
+
 	cout << endl;
 	cout << endl << "Clasa salariu" << endl;
 
@@ -1085,7 +1178,7 @@ void main()
 	int ValoareExplicita = (int)Sal8;
 	cout << "Valoare explicita: " << ValoareExplicita << endl;
 	cout << "Valoare Implicita: " << ValoareImplicita;
-	
+
 	SalariuInvatamant s1;
 	SalariuInvatamant s2;
 	SalariuInvatamant  s3;
@@ -1103,7 +1196,6 @@ void main()
 	delete[]s_salariu;
 
 
-	
+
 
 };
-
