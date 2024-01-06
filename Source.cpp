@@ -1,5 +1,6 @@
 
 #include<iostream>
+#include<fstream>
 using namespace std;
 class Angajat
 {
@@ -226,7 +227,56 @@ public://trec din public in privat
 		return aux;
 
 	}
-	friend ostream& operator<< (ostream& iesire, Angajat& a)//operator<<
+	
+	//operator->
+	Angajat* operator->()
+	{
+		cout << "Ani de vechime fara promovare:";
+		this->NrAniVechime = 1;
+		return this;
+	}
+	friend class Angajator;
+
+	friend ofstream& operator<<(ofstream& fisier,  Angajat& a)//fisiere text
+	{
+		fisier<< a.Nume << endl;
+		fisier << a.Profesie << endl;
+		fisier << a.NrAniVechime << endl;
+		for (int i = 0; i < a.NrAniVechime; i++)
+		{
+			fisier << a.Salariu[i];
+			if (i < a.NrAniVechime - 1)
+				fisier << ' '; // sau orice separator dorit
+		}
+
+		return fisier;
+
+    }
+	friend ifstream& operator>>(ifstream& fisier, Angajat& a)//fisier text
+	{
+		fisier >> a.Nume;
+		fisier >> a.Profesie;
+		fisier >> a.NrAniVechime;
+		if (a.Salariu != NULL)
+			delete[]a.Salariu;
+		if(a.NrAniVechime>0)
+		{
+			a.Salariu = new float[a.NrAniVechime];
+			for (int i = 0;i < a.NrAniVechime;i++)
+			{
+				fisier >> a.Salariu[i];
+			}
+
+		}
+		else
+		{
+			a.Salariu = NULL;
+		}
+		return fisier;
+
+		
+	}
+	friend ostream& operator<< (ostream& iesire,  Angajat& a)//operator<<
 	{
 		iesire << "Id : " << a.getId() << "." << endl << "Nume  Angajat : " << a.getNume() << "." << endl << "Profesie: " << a.getProfesie() << " ." << endl << " Spor de risc: " << a.getSporDeRisc() << " . " << endl << " Angajatul are " << a.getNrAniVechime() << " ani vechime.  " << endl;
 		if (a.getNrAniVechime() != NULL)
@@ -246,14 +296,6 @@ public://trec din public in privat
 		iesire << endl;
 		return iesire;
 	}
-	//operator->
-	Angajat* operator->()
-	{
-		cout << "Ani de vechime fara promovare:";
-		this->NrAniVechime = 1;
-		return this;
-	}
-	friend class Angajator;
 
 };
 int getNrAniVechime2(Angajat a)//functii globale
@@ -270,6 +312,9 @@ string getNume2(Angajat b)
 
 
 int Angajat::SporDeRisc = 2;
+///////////////////////////////////////////////////////////
+
+
 
 class Firma
 {
@@ -468,6 +513,9 @@ public:
 	friend istream& operator>>(istream& intrare, Firma& firma);//functii prietene
 
 	friend ostream& operator<<(ostream& iesire, const Firma& firma);
+
+	friend ofstream& operator<<(ofstream& fisier, Firma& f);//fisiere text
+	friend ifstream& operator>>(ifstream& fisier, Firma& f);
 	float operator()()
 	{
 		float suma = 0;
@@ -495,7 +543,40 @@ public:
 };
 
 float Firma::PlatitoareTVA = 0.19;
-ostream& operator<<(ostream& iesire, Firma& firma)
+ofstream& operator<<(ofstream& fisier,  Firma& f)
+{
+	fisier << f.nume << endl;
+	fisier << f.nrAniVechime << endl;
+	fisier << f.CifraDeAfaceri << endl;
+	fisier << f.nrAngajati << endl;
+	return fisier;
+
+}
+ifstream& operator >>(ifstream& fisier, Firma& f)
+{
+	fisier >> f.nume;
+	fisier >> f.nrAniVechime;
+	if (f.CifraDeAfaceri != NULL)
+	{
+		delete[]f.CifraDeAfaceri;
+	}
+	if (f.nrAniVechime > 0)
+	{
+		f.CifraDeAfaceri = new float[f.nrAniVechime];
+		for (int i = 0;i < f.nrAniVechime;i++)
+		{
+			fisier >> f.CifraDeAfaceri[i];
+		}
+	}
+	else
+	{
+		f.CifraDeAfaceri = NULL;
+
+	}
+	return fisier;
+}
+
+ostream& operator<<(ostream& iesire,  Firma& firma)
 {
 	iesire << "Cod Caen:" << firma.getCodCaen() << endl << "Nume firma: " << firma.getNume() << endl << "Numar angajati: " << firma.getNrAngajati() << endl << " Numar ani vechime :" << firma.getAniVechime() << endl;
 	if (firma.getAniVechime() != NULL)
@@ -989,6 +1070,30 @@ void main()
 
 		}
 	delete[]matrice;
+	//fisiere text 
+	//Angajat angajat1;
+	
+	ofstream fis("Angajat.txt", ios::out);//apelez fisier text de iesire
+	fis << ang1;
+	fis << ang3;
+	fis.close();
+
+	ifstream g("Angajat.txt", ios::in);//ap fis text de intrare
+	g >> ang3;
+	cout << ang3;
+	g.close();
+
+	Angajat a1;
+	fstream x("Angajat.bin", ios::out | ios::binary);//ap fis binare 
+	x.write((char*)&a1, sizeof(Angajat));
+	x.close();
+	fstream y("Angajat.bin", ios::in | ios::binary);
+	y.read((char*)&a1, sizeof(Angajat));
+	y.close();
+
+
+
+
 
 
 
@@ -1081,6 +1186,28 @@ void main()
 	delete[]f_firma;
 	cout << endl<<"~~ has a ~~ " << endl;
 
+	//fisiere text 
+	ofstream m ("Firma.txt", ios::out);
+	m<< firma3;
+	m.close();
+
+	ifstream n("Firma.txt", ios::in);
+	n >> firma2;
+	cout << firma2;
+	n.close();
+
+	Firma firma11;
+	fstream w("Firma.bin", ios::out | ios::binary);//ap fis binare 
+	w.write((char*)&firma11, sizeof(Firma));
+	w.close();
+	fstream z("Firma.bin", ios::in | ios::binary);
+	z.read((char*)&firma11, sizeof(Firma));
+	z.close();
+
+
+	
+
+
 	Colaborator client1;
 
 	cout << client1;
@@ -1103,7 +1230,7 @@ void main()
 	cout << " ";
 
 	cout << endl;
-	cout << endl << "Clasa salariu" << endl;
+	//cout << endl << "Clasa salariu" << endl;
 
 
 
