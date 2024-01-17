@@ -1,3 +1,10 @@
+////Domeniul ales a fost munca, cele 3 clase fiind Angajat, Firma și SalariuInvatamant
+//Prin derivarea clasei Firma, s-a obținut și clasa FirmaAsigurata reprezentând relația de "is-a "(procesul de mostenire).
+//Aceasta extindere, a adus câteva caracteristici suplimentare clasei de baza(prin atributele perioadaDrAsigurare și PretAsigurare).
+//Clasa Colaborator reprezinta partenerii firmei, conținând atribute care oferă informații precum nume și  vechime, stabilind astfel o relație de "has-a" cu clasa de baza prin  crearea unui pointer la clasa de tipul abstract Corporatie.
+//Astfel, am creat un vector  de pointeri la clasa Corporatie, adăugând câteva firme în vector și afișând numele acestora.(acest lucru fiind posibil prin funcția virtuala redefinita).
+//În clasa Firma am realizat constructori care initializeaza o firma cu diverse atribute precum nume, cod caen, cota impozitare tva, cifra de afaceri(de tip pointer) care depinde de nr de ani vechime.
+
 #include<iostream>
 #include<fstream>
 #include<vector>
@@ -17,21 +24,9 @@ private:
 	int NrAniVechime;
 	float* Salariu;
 	static int SporDeRisc;
-public://trec din public in privat
-	static int getSporDeRisc()//doar citire, functia statica
-	{
-		return Angajat::SporDeRisc;
+public:
 
-	}
-	static void setSporDeRisc(int spor)//accesez si modific
-	{
-		if (spor > 0)
-		{
-			Angajat::SporDeRisc = spor;
-		}
-	}
-
-	Angajat() :id(1)
+	Angajat() :id(1)// constructor initializare
 	{
 		this->Nume = " Angajat";
 		this->NrAniVechime = 0;
@@ -39,7 +34,7 @@ public://trec din public in privat
 		this->Profesie = " Profesie ";
 
 	}
-	Angajat(int idNou, string Nume, string Profesie) : id(idNou)
+	Angajat(int idNou, string Nume, string Profesie) : id(idNou)// constructori cu parametri 
 	{
 		this->Nume = Nume;
 		this->NrAniVechime = 0;
@@ -83,59 +78,47 @@ public://trec din public in privat
 			this->Salariu = NULL;
 
 	}
-	Angajat operator=(const Angajat& a)
-	{
-		if (this != &a)
-		{
-			if (this->Salariu != NULL)
-			{
-				delete[]this->Salariu;
-			}
-			Nume = a.Nume;
-			Profesie = a.Profesie;
-			NrAniVechime = a.NrAniVechime;
-			Salariu = new float[NrAniVechime];
-
-			if (NrAniVechime != 0)
-			{
-				this->Salariu = new float[NrAniVechime];
-				for (int i = 0;i < NrAniVechime;i++)
-				{
-					this->Salariu[i] = a.Salariu[i];
-				}
-
-			}
-			else this->Salariu = NULL;
-
-		}
-		return *this;
-	}
-	~Angajat()
+	~Angajat()//destructorul clasei 
 	{
 		if (this->Salariu != NULL)
 		{
 			delete[]this->Salariu;
 		}
 	}
+	
+
 	void afisare()
 	{
-		cout << id << "." << " Angajatul: " << Nume << endl;
-		cout << "      Profesia:" << Profesie << endl;
-		cout << "      Ani vechime:  " << NrAniVechime << " ani." << endl;
-		cout << "      Pe fiecare an a avut salariul de: ";
+		cout <<"  "<< id << "." << " Angajatul: " << Nume << endl;
+		cout << "     Profesia:" << Profesie << endl;
+		cout << "     Ani vechime:  " << NrAniVechime << " ani." << endl;
+		cout << "     Pe fiecare an a avut salariul de: "<<endl ;
 		if (NrAniVechime != NULL)
 		{
 			for (int i = 0;i < NrAniVechime;i++)
 			{
-				cout << i + 1 << Salariu[i] << "lei" << " ";
+				cout <<"      " << i + 1 << Salariu[i] << "lei" << " " << endl;
 			}
 		}
 		else
 		{
-			cout << " - ";
+			cout << " - "<<endl;
 		}
 		cout << endl << "    Sporul de risc este: " << SporDeRisc << endl;
 
+	}
+	//get si set-functii
+	static int getSporDeRisc()//doar citire, functia statica
+	{
+		return Angajat::SporDeRisc;
+
+	}
+	static void setSporDeRisc(int spor)//accesez si modific
+	{
+		if (spor > 0)
+		{
+			Angajat::SporDeRisc = spor;
+		}
 	}
 
 	string getNume()
@@ -199,10 +182,41 @@ public://trec din public in privat
 	}
 	float* getSalariu()
 	{
-		return this->Salariu;
+		
+		
+		return  this->Salariu;
 	}
-	friend int getNrAniVechime2(Angajat a);
+	friend int getNrAniVechime2(Angajat a);// functii prietene
 	friend string getNume2(Angajat b);
+
+	//operatori =,+, ->atribuire
+	Angajat operator=(const Angajat& a)
+	{
+		if (this != &a)
+		{
+			if (this->Salariu != NULL)
+			{
+				delete[]this->Salariu;
+			}
+			Nume = a.Nume;
+			Profesie = a.Profesie;
+			NrAniVechime = a.NrAniVechime;
+			Salariu = new float[NrAniVechime];
+
+			if (NrAniVechime != 0)
+			{
+				this->Salariu = new float[NrAniVechime];
+				for (int i = 0;i < NrAniVechime;i++)
+				{
+					this->Salariu[i] = a.Salariu[i];
+				}
+
+			}
+			else this->Salariu = NULL;
+
+		}
+		return *this;
+	}
 
 
 	Angajat operator+(const Angajat& a)//operator+-supraincarcare
@@ -252,13 +266,13 @@ public://trec din public in privat
 		{
 			fisier << a.Salariu[i];
 			if (i < a.NrAniVechime - 1)
-				fisier << ' '; // sau orice separator dorit
+				fisier << ' '; 
 		}
 
 		return fisier;
 
     }
-	friend ifstream& operator>>(ifstream& fisier, Angajat& a)//fisier text
+	friend ifstream& operator>>(ifstream& fisier, Angajat& a)// pentru fisier text
 	{
 		fisier >> a.Nume;
 		fisier >> a.Profesie;
@@ -282,17 +296,17 @@ public://trec din public in privat
 
 		
 	}
-	friend ostream& operator<< (ostream& iesire,  Angajat& a)//operator<< 
+	friend ostream& operator<< (ostream& iesire,  Angajat& a)//operator<< care afiseaza 
 	{
-		iesire << "Id : " << a.getId() << "." << endl << "Nume  Angajat : " << a.getNume() << "." << endl << "Profesie: " << a.getProfesie() << " ." << endl << " Spor de risc: " << a.getSporDeRisc() << " . " << endl << " Angajatul are " << a.getNrAniVechime() << " ani vechime.  " << endl;
+		iesire << " Id : " << a.getId() << "" << endl << " Nume angajat : " << a.getNume() << "" << endl << " Profesie: " << a.getProfesie() << " " << endl << " Spor de risc: " << a.getSporDeRisc() << "  " << endl << " Angajatul are " << a.getNrAniVechime() << " ani vechime " << endl;
 		if (a.getNrAniVechime() != NULL)
 
 		{
-			iesire << " Salariul pentru fiecare an : ";
+			iesire << " Salariul pentru fiecare an : "<<endl;
 			for (int i = 0; i < a.getNrAniVechime(); i++)
 			{
 
-				iesire << a.getSalariu()[i] << ",";
+				iesire << " "<<a.getSalariu()[i] << endl << "";
 			}
 		}
 		else
@@ -302,11 +316,11 @@ public://trec din public in privat
 		iesire << endl;
 		return iesire;
 	}
-	void afisareDescriere()
+	void afisareDescriere()// functia redefinita  de la clasa abstracta 
 	{
 		
 		
-			cout << "Lucratorul  " << this->getNume() << " este angajat.";
+			cout << "Lucratorul  " << this->getNume() << " este angajat."<<endl;
 		
 		
 		
@@ -347,8 +361,7 @@ public:
 		this->Salariu = SalariuNou;
 		this->ZiuaLunii = 23;
 	}
-	~AngajatPromovat()
-	{}
+	
 	AngajatPromovat(const AngajatPromovat& a) :Angajat(a) {
 		
 		this->Salariu = a.Salariu;
@@ -414,17 +427,7 @@ private:
 	int nrAngajati;
 	static float PlatitoareTVA;//atribut static
 public:
-	static float getPlatitoareTVA()
-	{
-		return Firma::PlatitoareTVA;
-	}
-	static void setPlatitoareTVA(float TVA)
-	{
-		if (TVA != 0)
-		{
-			Firma::PlatitoareTVA = TVA;
-		}
-	}
+	
 
 	Firma() :CodCaen(2573)//primul constructor de initializare
 	{
@@ -472,6 +475,15 @@ public:
 
 
 	}
+	~Firma()//destructor
+	{
+
+		if (this->CifraDeAfaceri != NULL)
+		{
+			delete[]this->CifraDeAfaceri;
+		}
+		CifraDeAfaceri = NULL;
+	}
 
 
 	Firma operator=(const Firma& f)// operatorul =
@@ -497,29 +509,21 @@ public:
 	}
 
 
-	~ Firma()//destructor
-	{
-		
-		if (this->CifraDeAfaceri != NULL)
-		{
-			delete[]this->CifraDeAfaceri;
-		}
-		CifraDeAfaceri = NULL;
-	}
+
 	void afisare()
 	{
 		cout << endl;
-		cout << " Nume firma: " << nume << endl;
-		cout << " Cod CAEN: " << CodCaen << endl;
-		cout << " Numar de angajati:  " << nrAngajati << endl;
-		cout << " Vechimea firmei :  " << nrAniVechime << endl;
+		cout << " Nume firma:" << nume << endl;
+		cout << " Cod CAEN:" << CodCaen << endl;
+		cout << " Numar de angajati:" << nrAngajati << endl;
+		cout << " Vechimea firmei :" << nrAniVechime << endl;
 		if (nrAniVechime != NULL)
 		{
 			cout << " Cifra de afaceri (mii euro) pentru fiecare an este:" << endl;
 			for (int i = 0; i < nrAniVechime; i++)
 			{
 
-				cout << " Anul: " << i << "/" << CifraDeAfaceri[i] << " " << endl;
+				cout << " Anul[ " << i+1 << "]: " << CifraDeAfaceri[i] << "milioane lei " << endl;
 
 			}
 		}
@@ -527,8 +531,19 @@ public:
 		{
 			cout << " Firma nu are rulaj" << endl;
 		}
-		cout << "TVA-ul platit de firma este: " << PlatitoareTVA << endl;
+		cout << " TVA-ul platit de firma este: " << PlatitoareTVA << endl;
 
+	}
+	static float getPlatitoareTVA()
+	{
+		return Firma::PlatitoareTVA;
+	}
+	static void setPlatitoareTVA(float TVA)
+	{
+		if (TVA != 0)
+		{
+			Firma::PlatitoareTVA = TVA;
+		}
 	}
 	void setNume(string nume)
 	{
@@ -618,6 +633,7 @@ public:
 
 	friend ofstream& operator<<(ofstream& fisier, Firma& f);//fisiere text
 	friend ifstream& operator>>(ifstream& fisier, Firma& f);
+	//operatori
 	float operator()()
 	{
 		float suma = 0;
@@ -632,7 +648,7 @@ public:
 		Firma copie = *this;
 		this->nrAngajati = nrAngajati++;
 
-		return copie;
+		return *this;
 	}
 	Firma* operator->()
 	{
@@ -642,7 +658,7 @@ public:
 
 	}
 	void afisare_firma() {
-		cout << " Societatea  cu numele " << this->getNume() <<"este o firma"<< endl;//redefinesc functia virtuala
+		cout << " Societatea  cu numele " << this->getNume() <<" este o firma. "<< endl;//redefinesc functia virtuala
 	}
 
 };
@@ -683,15 +699,15 @@ ifstream& operator >>(ifstream& fisier, Firma& f)
 
 ostream& operator<<(ostream& iesire,  Firma& firma)
 {
-	iesire << "Cod Caen:" << firma.getCodCaen() << endl << "Nume firma: " << firma.getNume() << endl << "Numar angajati: " << firma.getNrAngajati() << endl << " Numar ani vechime :" << firma.getAniVechime() << endl;
+	iesire << "Cod Caen:" << firma.getCodCaen() << endl << "Nume firma: " << firma.getNume() << endl << "Numar angajati: " << firma.getNrAngajati() << endl << "Numar ani vechime :" << firma.getAniVechime() << endl;
 	if (firma.getAniVechime() != NULL)
 
 	{
-		iesire << "Cifrele de afaceri din ultimii ani :";
+		iesire << "Cifrele de afaceri din ultimii ani :"<<endl;
 		for (int i = 0;i < firma.getAniVechime();i++)
 		{
 
-			iesire << "  " << firma.getCifradeAfaceri()[i] << " , ";
+			iesire  << firma.getCifradeAfaceri()[i] <<" milioane lei"<<endl << " ";
 		}
 	}
 	else
@@ -758,7 +774,7 @@ public:
 		
 		this->PerioadaAsigurare = fa.PerioadaAsigurare;
 		this->PretAsigurare = fa.PretAsigurare;
-	}//operator de copiere
+	}//constructor de copiere
 	FirmaAsigurata operator=(const FirmaAsigurata& fa)
 	{
 		if (this != &fa)
@@ -771,9 +787,9 @@ public:
 		return *this;
 
 	}
-	friend ostream& operator<<(ostream& afisare2,  FirmaAsigurata& fa)
+	friend ostream& operator<<(ostream& afisare2,  FirmaAsigurata& fa)// pentru afisare
 	{
-		afisare2 << "Numele firmei este " << fa.getNume()<<endl;
+		afisare2 << " Numele firmei este " << fa.getNume()<<endl;
 		afisare2 << " Perioada de asigurare este de " << fa.PerioadaAsigurare << " luni" << endl;
 		afisare2 << " Pretul asigurarii este de " << fa.PretAsigurare << " lei. " << endl;
 		
@@ -809,7 +825,7 @@ public:
 	{
 	private:
 		string nume;
-		Corporatie** firma;//tabela de pointeri
+		Corporatie** firma;//tabela de pointeri, pointer la tipul abstract , obtinut prin prezenta unei functii virtuale 
 		int vechime;
 	public:
 		Colaborator()
@@ -832,7 +848,19 @@ public:
 				delete[]this->firma;
 			}
 		}
-		friend ostream& operator<<(ostream& iesire, const Colaborator& c)
+		  //ooperatori
+		  Corporatie* operator[](int index)
+		  {
+			  return this->firma[index];
+		  }
+		  Colaborator operator+(const Colaborator& c)
+		  {
+			  Colaborator aux = *this;
+			  aux.vechime = this->vechime + c.vechime;
+			  return aux;
+
+		  }
+		friend ostream& operator<<(ostream& iesire, const Colaborator& c)//afisare
 		{
 			iesire << " Clientul " << c.nume << " colaboreaza cu firma  de " << c.vechime << " ani " << endl;
 			iesire << " ----------------------------------------" << endl;
@@ -860,17 +888,7 @@ public:
 			return this->firma;
 	
 		}
-		Corporatie* operator[](int index)
-		{
-			return this->firma[index];
-		}
-		Colaborator operator+(const Colaborator& c)
-		{
-			Colaborator aux = *this;
-			aux.vechime = this->vechime + c.vechime;
-			return aux;
-	
-		}
+		
 	};
 	class SalariuInvatamant
 	{
@@ -882,18 +900,7 @@ public:
 		static float SalariuMinim;
 		const int CodCOR;
 	public:
-		static float getSalariuMinim()//doar citire, functia statica
-		{
-			return SalariuInvatamant::SalariuMinim;
-	
-		}
-		static void setSalariuMinim(float salariu)//accesez si modific
-		{
-			if (salariu > 0)
-			{
-				SalariuInvatamant::SalariuMinim = salariu;//atributul static
-			}
-		}
+		
 	
 	
 		SalariuInvatamant() :CodCOR(23)//constructor 1-initializez atributele
@@ -993,16 +1000,28 @@ public:
 				{
 					this->AdaosGrad[i] = AdaosGrad[i];
 	
-					cout << endl << "Adaos[" << i + 1 << "]=" << AdaosGrad[i] << endl;
+					cout << endl << " Adaos[" << i + 1 << "]=" << AdaosGrad[i] << endl;
 				}
 			}
 			else
 			{
 				cout << " - " << endl;
 			}
-			cout << "Salariul minim este:" << SalariuMinim << endl;
+			cout << " Salariul minim este:" << SalariuMinim << endl;
 			cout << endl;
 	
+		}
+		static float getSalariuMinim()//doar citire, functia statica
+		{
+			return SalariuInvatamant::SalariuMinim;
+
+		}
+		static void setSalariuMinim(float salariu)//accesez si modific
+		{
+			if (salariu > 0)
+			{
+				SalariuInvatamant::SalariuMinim = salariu;//atributul static
+			}
 		}
 	
 		void setPozitieAngajat(string PozitieAngajat)
@@ -1070,7 +1089,7 @@ public:
 		{
 			SalariuInvatamant copie = *this;
 			this->Valoare = Valoare--;
-			return copie;
+			return *this;
 	
 		}
 		int operator [](int index)
@@ -1147,20 +1166,20 @@ void main()
 {
 	cout << endl << "~~~~~~~~~~~Clasa angajat~~~~~~~~~~~" << endl;
 	float Salariu1[] = { 500, 100,1120 };
-	cout << "Angajat1" << endl;
+	cout << "Angajat1- constructor initializare " << endl;
 	Angajat ang1;//constructorul de initializare
 	ang1.afisare();
 	cout << endl;
-	cout << "Angajat2" << endl;
+	cout << "Angajat2- constructorul cu 3 parametri " << endl;
 	Angajat ang2(7, " Ionescu Andreea", " Inginer sef ");//constructorul cu 3 parametrii
 	ang2.afisare();
 	cout << endl;
-	cout << "Angajat3" << endl;
+	cout << "Angajat3- constructor cu lista parametri " << endl;
 	Angajat ang3(4, "Georgescu ", "Asistent", 3, Salariu1);//apelez constr cu toti parametrii
 	Angajat::setSporDeRisc(4);
 	ang3.afisare();
 	cout << endl;
-	cout << "Angajat4- constr copiere" << endl;
+	cout << "Angajat4- constructorul de copiere" << endl;
 	Angajat ang4(ang2);//apelez constructorul de copiere
 	ang4.afisare();
 	cout << endl;
@@ -1169,7 +1188,7 @@ void main()
 	ang6 = ang3;//apelez operatorul=
 	ang6.afisare();
 	cout << endl;
-	cout << "functii get si set" << endl;//functii de get si set
+	cout << "Functiile get si set pentru angajat2" << endl;//functii de get si set
 	cout << endl;
 	ang2.setNume("Popescu Adela");
 	cout << "Nume nou:" << ang2.getNume() << endl;
@@ -1182,18 +1201,13 @@ void main()
 	cout << "Ani vechime: " << ang2.getNrAniVechime() << endl;
 
 
-
+	cout << "Set pentru vector "<<endl;
 	float* salariu1 = new float[3] {2000, 2200, 2300};
 	ang2.setSalariu(3, salariu1);
-	cout << ang2.getSalariu() << endl;
 	ang2.afisare();
 
 	float* SalariuObtinut = ang2.getSalariu();
-	for (int i = 0;i < 3;i++)
-	{
-		cout << "Salariu obtinut: [" << i + 1 << "]: ";
-		cout << SalariuObtinut[i] << "" << endl;
-	}
+	
 
 
 	cout << endl;
@@ -1203,9 +1217,10 @@ void main()
 	cout << endl;
 	//supraincarcare operatori
 	cout << "Operator +" << endl;
-	cout << "Angajatul 1 :" << endl;
+	cout << "Angajatul 1 + angajat6 :" << endl;
 	ang1.afisare();
-	ang1 = ang4 + ang1;
+	ang1 = ang6 + ang1;
+	cout << " Dupa adunare:" << endl;
 	ang1.afisare();
 	cout << endl;
 	cout << " Operator iesire" << endl;
@@ -1216,17 +1231,15 @@ void main()
 	ang8.setNrAniVechime(5);
 	cout << "Ani de vechime:" << ang8.getNrAniVechime() << endl;
 	cout << ang8->getNrAniVechime() << endl;
-	Angajat angaj1;
-	Angajat angaj2;
-	Angajat angaj3;
+	
 	Angajat* a_angajat = new Angajat[3];//vector de 3 obiecte;
-	a_angajat[0] = angaj1;
-	a_angajat[1] = angaj2;
-	a_angajat[2] = angaj3;
+	a_angajat[0] = ang1;
+	a_angajat[1] = ang2;
+	a_angajat[2] = ang3;
 	cout << endl << " Vector de obiecte  angajat " << endl;
 	for (int i = 0;i < 3;i++)
 	{
-		cout << "angajat [" << i + 1 << "]=";
+		cout << "angajat [" << i + 1 << "]: "<<endl;
 
 		cout << a_angajat[i] << endl;
 	}
@@ -1245,7 +1258,7 @@ void main()
 		}
 	delete[]matrice;
 	//clase abstracte
-	cout << endl << " Vectorul clasei abstracte " << endl;
+	cout << endl << " Vectorul clasei abstracte: " << endl;
 	ang3.afisareDescriere();
 	vector<Lucrator*>vectorAngajat;
 	for (int i = 9;i < 20;i++)
@@ -1260,7 +1273,7 @@ void main()
 		cout << endl << "-------------------------------" << endl;
 	}
 
-	//fisiere text 
+	cout << " Fisiere text si binare" << endl;
 	Angajat angajat1;
 
 	ofstream fis("Angajat.txt", ios::out);//apelez fisier text de iesire
@@ -1283,13 +1296,13 @@ void main()
 	//clase mostenite
 	AngajatPromovat AngProm1;
 	cout << " Clasa mostenita : Angajat promovat" << endl;
-	cout << "Angajat promovat 1: " << endl << AngProm1 << endl;
+	cout << " Angajat promovat 1: " << endl << AngProm1 << endl;
 	AngajatPromovat AngProm2(AngProm1);
-	cout << "Angajat promovat 2:" << endl << AngProm2 << endl;//apelare constructor de copiere 
+	cout << " Angajat promovat 2:" << endl << AngProm2 << endl;//apelare constructor de copiere 
 	AngajatPromovat AngProm3(1800, 28);
-	cout << " Angajat promovat 3:" << AngProm3 << endl;
+	cout << " Angajat promovat 3:" <<endl<< AngProm3 << endl;
 	AngProm2 = AngProm3;
-	cout << "Angajatul promovat 2 actualizat:" << AngProm3 << endl;
+	cout << " Angajatul promovat 2 actualizat:" << AngProm3 << endl;
 
 	AngProm2.setSalariu(2600);
 	cout << " Noul salariu al AngProm2 este:" << AngProm2.getSalariu() << endl;
@@ -1298,91 +1311,78 @@ void main()
 
 		cout << endl << "~~~~~~~~Clasa Firma~~~~~~~~~" << endl;
 		float Cifra[] = { 1.9, 9.9, 5.9 };
-		cout << "Firma1 ";
+		cout << "Firma1 -constructor initializare ";
 		Firma firma1;
 		firma1.afisare();//primul constr
 		Firma::setPlatitoareTVA(0.20);//functie statica
 		cout << endl;
-		cout << "Firma2" << endl;
+		cout << "Firma2 -constructor cu 2 parametri" << endl;
 		Firma firma2(6972, "SC.RAMYCONT.SRL");//al doilea constructor
 		Firma::setPlatitoareTVA(0.21);
 		firma2.afisare();
 		cout << endl;
-		cout << "Firma3 " << endl;
+		cout << "Firma3 -constructorul cu mai multi parametri " << endl;
 		Firma firma3(7765, "SC.IMOBILIAR GRUP SRL", 27, 3, Cifra);//al treilea constructor
 		Firma::setPlatitoareTVA(0.18);
 		firma3.afisare();
 		cout << endl;
-		cout << "Firma4 " << endl;
+		cout << "Firma4 -constructorul de copiere " << endl;
 		Firma firma4(firma3);
 		firma4.afisare();//apelez constr de copiere
 		cout << endl;
-		cout << "Firma5" << endl;
+		cout << "Firma5 -operator=" << endl;
 		Firma firma5;//apelez pt operatorul=
 		firma5 = firma3;
 		firma5.afisare();
 		cout << endl;
-		cout << "Firma 6" << endl;
-		Firma firma6;
-		firma6 = firma4;
+		
+		cout << " Get si set: "<<endl;
 		float* CifraDeAfaceri1 = new float[4] {2.2, 1.8, 2.0, 1.4};
-		firma6.setCifra(4, CifraDeAfaceri1);
-
-
-		float* CifraObtinuta = firma6.getCifradeAfaceri();
-		for (int i = 0;i < 4;i++)
-		{
-			cout << "Cifra de afaceri [" << i + 1 << "]: ";
-			cout << CifraObtinuta[i] << "" << endl;
-		}
-
-		firma6.afisare();
+		firma5.setCifra(4, CifraDeAfaceri1);
+		float* CifraObtinuta = firma5.getCifradeAfaceri();
+		firma5.afisare();
 		cout << endl;
-		cout << "Firma7" << endl;
+		
+		cout << " Firma7" << endl;
 		Firma firma7;
 
-		cout << "Operator>>- intrare " << endl;
-		cin >> firma7;
+		cout << " Operator>>- intrare " << endl;
+		//cin >> firma7;
 		cout << endl;
-		cout << "Operator <<-afisare intrare" << endl;
-		cout << firma7;
+		cout << " Firma 5 : Operator <<-afisare intrare" << endl;
+		cout << firma5;
 		cout << endl;
-		cout << "Operator ()" << endl;
+		cout << " Firma 5: Operator ()" << endl;
 		cout << " Suma cifrelor de afaceri: ";//operator()
-		cout << firma7() << " mii euro." << endl;
+		cout << firma5() << " mii euro." << endl;
 		cout << endl;
-		cout << " Operator ++:" << endl;//modific numarul de angajati
-		cout << firma7;
-		firma7 = firma7++;
+		cout << " Firma 5: Operator ++:" << endl;//modific numarul de angajati
+		cout <<" Inainte de incrementare:"<<endl<< firma5.getNrAngajati() << endl;
+		firma5= firma3++;
+		cout << " Dupa incrementare " << endl;
+		cout << firma5.getNrAngajati()<<endl;
 		cout << endl;
-		cout << " Incrementare  numar angajati: " << endl;
-		cout << firma7;
-		cout << endl;
-		cout << "Operator atribuire" << endl;
+		cout << "Operator atribuire:" << endl;
 		cout << "Firma 8" << endl;
 		Firma firma8;
 		firma8.setAniVechime(2);
 		cout << "Ani de vechime:" << firma8.getAniVechime() << endl;
 		cout << "Ani de vechime dupa atribuire: " << firma8->getAniVechime() << endl;
 		delete[]CifraDeAfaceri1;
-		Firma f1;
-		Firma f2;
-		Firma f3;
+	
 		Firma* f_firma = new Firma[3];//vector de 3 obiecte;
-		f_firma[0] = f1;
-		f_firma[1] = f2;
-		f_firma[2] = f3;
+		f_firma[0] = firma2;
+		f_firma[1] = firma3;
+		f_firma[2] = firma4;
 		cout << endl << " Vector de obiecte  firma  " << endl;
 		for (int i = 0;i < 3;i++)
 		{
-			cout << "firma [" << i + 1 << "]=";
-
-			cout << f_firma[i] << endl;
+			cout << "firma [" << i + 1 << "] "<<endl << f_firma[i] << endl;
 		}
 		delete[]f_firma; //eliberez spatiu
 
 		///clasa abstracta
-		cout << "clase abstracte- vector abstract" << endl;
+		cout << "Clase abstracte- vector abstract" << endl;//vectorul la tipul abstract, parteneri
 		firma3.afisare_firma();
 		vector<Corporatie*>vectorFirme;
 		Corporatie* firma9 = new Firma();
@@ -1427,10 +1427,11 @@ void main()
 		cout << client2;
 		client2.setNumeColaborator(" Ikea ");
 		client2.setVechime(5);
-		cout << "get pt nume: " << client2.getNumeColaborator() << endl << "get pt vechime : " << client2.getVechime() << endl;
+		cout << "get pt nume " << client2.getNumeColaborator() << endl << "get pt vechime : " << client2.getVechime() << endl;
 	
 		cout << client2 << endl;
-		cout <<"get pt firma "<< client2.getFirma();
+		 /*client2.getFirma();
+		 cout << client2<<"dupa get";*/
 		
 
 		cout <<endl<< "Operator+ pentru client 1 si 2"<<endl;
@@ -1440,25 +1441,25 @@ void main()
 		client4.getNumeColaborator();
 		cout <<"Nume schimbat:"<< client4<<endl;
 		client4 = client1 + client2;
-		cout <<"Rezultat: "<< client4;
+		cout <<"Rezultat (+): "<< client4;
 		
-		cout << "  Clasa mostenire "<<endl;
+		cout << " Clasa mostenire: "<<endl;
 		FirmaAsigurata fa1;
-		cout << fa1 << endl;
+		cout <<"Constructor initializare "<<endl<< fa1 << endl;
 		
 		FirmaAsigurata fa3(36, 800);
 		cout << fa3 << endl;
 		FirmaAsigurata fa2(fa1);//constr de copiere
-		cout << fa2;
+		cout <<" Constructor copiere "<<endl<< fa2;
 		fa3 = fa2;//operator=
-		cout << " Firma actualizata :"<<endl<< fa3 << endl;
+		cout <<endl<< " Firma actualizata - operator= :"<<endl<< fa3 << endl;
 
 
 
 		fa2.setPerioadaAsigurare(12 );
-		cout << " Noua perioada de asigurare a firmei este de " << fa2.getPerioadaAsigurare() << " luni " << endl;
+		cout << " Noua perioada de asigurare a firmei "<<fa2.getNume()<< "este de " << fa2.getPerioadaAsigurare() << " luni " << endl;
 		fa3.setPretAsigurare(2900);
-		cout << " Noul pret de asigurare al firmei 3 este de " << fa3.getPretAsigurare() << " lei" << endl;
+		cout << " Noul pret de asigurare al firmei "<<fa3.getNume()<<" este de " << fa3.getPretAsigurare() << " lei" << endl;
 
 	
      
@@ -1490,64 +1491,55 @@ void main()
 	Sal5 = Sal3;//operatorul=
 	Sal5.afisare();
 	cout << endl;
-	cout << "Salariu6 get si set " << endl;
+	cout << "Salariu6 : Get si set " << endl;
 
 	SalariuInvatamant Sal6;
+	cout << " Inainte de get/set:" << Sal6 << endl;
 
 	Sal6.setPozitieAngajat(" Profesor invatamant gimnazial");//apelez get si set pt toate atributele
-	cout << "Pozitie noua: " << Sal6.getPozitieAngajat() << endl;
+	//cout << "Pozitie noua: " << Sal6.getPozitieAngajat() << endl;
 	Sal6.setNrGrade(4);
-	cout << "Numar grade obtinute: " << Sal6.getNrGrade() << endl;
+	//cout << "Numar grade obtinute: " << Sal6.getNrGrade() << endl;
 	Sal6.setValoare(4000);
-	cout << "Valoare salariu : " << Sal6.getValoare() << endl;
+	//cout << "Valoare salariu : " << Sal6.getValoare() << endl;
 	float Adaos[] = { 100, 150, 200 };
 	Sal6.setAdaosGrad(3, Adaos);
 	float* adaosObtinut = Sal6.getAdaosGrad();
-	for (int i = 0;i < 3;i++)
-	{
-		cout << "Adaosul salariului[" << i + 1 << "]: ";
-		cout << adaosObtinut[i] << "" << endl;
-	}
+	cout << "Dupa get/set"<<Sal6<<endl;
 
-	cout << endl;
-	cout << endl;
 	cout << "Operator >>" << endl;//fctie prietena
 	cout << Sal6;//pt op<<
 	cout << endl;
-	cout << "salariu7" << endl;
-	SalariuInvatamant Sal7;
+	cout << "Salariu 7" << endl;
+	//SalariuInvatamant Sal7;
 	cout << " Operator >>" << endl;//fctie prietena
-	cin >> Sal7;
+	//cin >> Sal7;
 	cout << endl;
-	cout << Sal7;
+	//cout << Sal7;
 	cout << endl;
-	cout << "Operator --";
+	cout << "Operator --"<<endl;
 	Sal4.setValoare(2400);
-	Sal7 = Sal4--;
-	cout << Sal7 << endl << "Valoarea salariului este "<<Sal7.getValoare();
+	Sal4 = Sal4--;
+	cout << "Noua valoare a salariului 6 este "<<Sal4.getValoare();
 	cout << endl;
-	cout <<endl<< "  Operator Index " << endl;
+	cout <<endl<< "Operator Index " << endl;
 	cout << "Salariu 8"<<endl;
 	SalariuInvatamant Sal8(2708, " Profesor universitar stagiar", 3, 3500, new int[3] {100, 500, 1000});
 	cout << Sal8;
 	int ValoareImplicita = Sal8;///operator de cast
 	int ValoareExplicita = (int)Sal8;
-	cout << "Operator cast"<<endl<<"Valoare explicita: " << ValoareExplicita << endl;
+	cout << endl<<"Operator cast :"<<endl<<"Valoare explicita: " << ValoareExplicita << endl;
 	cout << "Valoare Implicita: " << ValoareImplicita<<endl;
 
-	SalariuInvatamant s1;
-	SalariuInvatamant s2;
-	SalariuInvatamant  s3;
+	
 	SalariuInvatamant* s_salariu = new SalariuInvatamant[3];//vector de 3 obiecte;
-	s_salariu[0] = s1;
-	s_salariu[1] = s2;
-	s_salariu[2] = s3;
+	s_salariu[0] = Sal2;
+	s_salariu[1] = Sal4;
+	s_salariu[2] = Sal6;
 	cout <<endl<< " Vector de obiecte  salariu " << endl;
 	for (int i = 0;i < 3;i++)
 	{
-		cout << "salariu [" << i + 1 << "]=";
-
-		cout << s_salariu[i] << endl;
+		cout << "salariu [" << i + 1 << "]:"<<endl<< s_salariu[i] << endl;
 	}
 	delete[]s_salariu;
 }
